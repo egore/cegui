@@ -118,6 +118,9 @@ OgreTexture::OgreTexture(const String& name, const String& filename,
     d_texelScaling(0, 0),
     d_name(name)
 {
+#ifndef CEGUI_USE_OGRE_TEXTURE_GPU
+    OGRE_RESET(d_texture);
+#endif
     loadFromFile(filename, resourceGroup);
 }
 
@@ -194,6 +197,9 @@ OgreTexture::OgreTexture(const String& name, Ogre::TexturePtr& tex,
     d_texelScaling(0, 0),
     d_name(name)
 {
+#ifndef CEGUI_USE_OGRE_TEXTURE_GPU
+    OGRE_RESET(d_texture);
+#endif
     setOgreTexture(tex, take_ownership);
 }
 

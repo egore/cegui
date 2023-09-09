@@ -348,7 +348,11 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(static_cast<std::uint32_t>(buffer_size.d_width), static_cast<std::uint32_t>(buffer_size.d_height),
                                                         1, toOgrePixelFormat(pixel_format), bufferCopy);
     createEmptyOgreTexture(pixel_format);
+#if (CEGUI_OGRE_VERSION < ((1 << 16) | (14 << 8) | 0))
     d_texture->freeInternalResources();
+#else
+    d_texture->unload();
+#endif
     d_texture->setWidth(static_cast<std::uint32_t>(buffer_size.d_width));
     d_texture->setHeight(static_cast<std::uint32_t>(buffer_size.d_height));
     d_texture->setDepth(1);

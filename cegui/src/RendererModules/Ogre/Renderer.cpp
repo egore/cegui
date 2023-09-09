@@ -765,9 +765,11 @@ void OgreRenderer::beginRendering()
         if ( !d_pimpl->d_previousVP )
         {
             d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
+#if (CEGUI_OGRE_VERSION < ((1 << 16) | (14 << 8) | 0))
             if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
                 d_pimpl->d_previousProjMatrix =
                     d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
+#endif
         }
     #endif
 
@@ -1756,9 +1758,13 @@ void OgreRenderer::initialiseTextureStates()
 #ifndef CEGUI_USE_OGRE_HLMS
     d_pimpl->d_renderSystem->_setTextureCoordCalculation(0, Ogre::TEXCALC_NONE);
     d_pimpl->d_renderSystem->_setTextureCoordSet(0, 0);
+#if (CEGUI_OGRE_VERSION < ((1 << 16) | (14 << 8) | 0))
     d_pimpl->d_renderSystem->_setTextureAddressingMode(0, S_textureAddressMode);
-    d_pimpl->d_renderSystem->_setTextureMatrix(0, Ogre::Matrix4::IDENTITY);
     d_pimpl->d_renderSystem->_setTextureUnitFiltering(0, Ogre::FO_LINEAR, Ogre::FO_LINEAR, Ogre::FO_NONE);
+#else
+    #warning "Missing d_pimpl->d_renderSystem->_setTextureUnitSettings call"
+#endif
+    d_pimpl->d_renderSystem->_setTextureMatrix(0, Ogre::Matrix4::IDENTITY);
     d_pimpl->d_renderSystem->_setAlphaRejectSettings(Ogre::CMPF_ALWAYS_PASS, 0, false);
     d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_colourBlendMode);
     d_pimpl->d_renderSystem->_setTextureBlendMode(0, S_alphaBlendMode);

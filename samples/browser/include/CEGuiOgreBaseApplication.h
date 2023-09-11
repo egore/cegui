@@ -136,6 +136,9 @@ protected:
 #if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
     Ogre::Root* d_ogreRoot;
 #endif
+#if (OGRE_VERSION >= ((1 << 16) | (13 << 8) | 0))
+    Ogre::SceneNode* d_camNode;
+#endif
     Ogre::Camera* d_camera;
 #if (OGRE_VERSION < ((1 << 16) | (10 << 8) | 0))
     Ogre::RenderWindow* d_window;

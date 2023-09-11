@@ -116,10 +116,19 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
             "SampleSceneMgr");
 #endif
         // Create and initialise the camera
+#if (OGRE_VERSION >= ((1 << 16) | (13 << 8) | 0))
+        Ogre::SceneNode* d_camNode = sm->getRootSceneNode()->createChildSceneNode();
+        d_camNode->setPosition(Vector3(0,0,500));
+        d_camNode->lookAt(Vector3(0,0,-300), Ogre::Node::TS_PARENT);
+        d_camera = sm->createCamera("SampleCam");
+        d_camera->setNearClipDistance(5);
+        d_camNode->attachObject(d_camera);
+#else
         d_camera = sm->createCamera("SampleCam");
         d_camera->setPosition(Vector3(0,0,500));
         d_camera->lookAt(Vector3(0,0,-300));
         d_camera->setNearClipDistance(5);
+#endif
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 
@@ -266,10 +275,19 @@ void CEGuiOgreBaseApplication::setup()
     // Create the scene manager
     SceneManager* sm = getRoot()->createSceneManager();
     // Create and initialise the camera
+#if (OGRE_VERSION >= ((1 << 16) | (13 << 8) | 0))
+    Ogre::SceneNode* d_camNode = sm->getRootSceneNode()->createChildSceneNode();
+    d_camNode->setPosition(Vector3(0,0,500));
+    d_camNode->lookAt(Vector3(0,0,-300), Ogre::Node::TS_PARENT);
+    d_camera = sm->createCamera("SampleCam");
+    d_camera->setNearClipDistance(5);
+    d_camNode->attachObject(d_camera);
+#else
     d_camera = sm->createCamera("SampleCam");
     d_camera->setPosition(Vector3(0,0,500));
     d_camera->lookAt(Vector3(0,0,-300));
     d_camera->setNearClipDistance(5);
+#endif
     // Create a viewport covering whole window
     Viewport* vp = getRenderWindow()->addViewport(d_camera);
     vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 0.0f));

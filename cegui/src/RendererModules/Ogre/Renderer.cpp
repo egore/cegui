@@ -765,10 +765,12 @@ void OgreRenderer::beginRendering()
         if ( !d_pimpl->d_previousVP )
         {
             d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
-#if (CEGUI_OGRE_VERSION < ((1 << 16) | (14 << 8) | 0))
             if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
                 d_pimpl->d_previousProjMatrix =
+#if (CEGUI_OGRE_VERSION < ((1 << 16) | (14 << 8) | 0))
                     d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
+#else
+                    d_pimpl->d_previousVP->getCamera()->getProjectionMatrixWithRSDepth();
 #endif
         }
     #endif
